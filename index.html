@@ -42,7 +42,7 @@
       <div class="hero-left">
         <div class="hero-stamp-block">
           <span class="stamp-line">BUILD LOG</span>
-          <span class="stamp-date">2026.04</span>
+          <span class="stamp-date">2026.05</span>
         </div>
         <h1 class="hero-name">陈思翰</h1>
         <div class="hero-tags">
@@ -157,7 +157,7 @@
               </div>
               <div class="bt-body">
                 <h4>全面拥抱 AI 工具链</h4>
-                <p>开始系统使用 Antigravity、OpenClaw、Claude Code，将 AI 融入开发全流程。TimeBox 开发启动（Figma + Claude Code）。</p>
+                <p>开始系统使用 Claude Code，将 AI 融入开发全流程。TimeBox 开发启动（Figma + Claude Code）。</p>
               </div>
             </div>
           </div>
@@ -287,6 +287,52 @@
               </div>
             </div>
 
+          </div>
+        </div>
+
+        <div class="bt-group reveal">
+          <div class="bt-period">2026 年 5月</div>
+          <div class="bt-events">
+
+            <div class="bt-event bt-event-major">
+              <div class="bt-meta">
+                <span class="bt-date mono">05.02</span>
+                <span class="bt-tag dev">开发</span>
+                <span class="bt-tag-live">◎ 开源</span>
+              </div>
+              <div class="bt-body">
+                <h4>Ask LLM & Link — Obsidian 插件发布</h4>
+                <p>选中文本 → 向 LLM 提问 → 回答保存为新笔记 → 原文自动替换为 <code>==高亮== [[wiki link]]</code>。支持文字、表格、代码块、图片多内容类型，全文上下文注入，三 Provider（OpenAI / Anthropic / Ollama），目录结构镜像。TypeScript 原生插件。</p>
+                <div class="bt-links">
+                  <a href="https://github.com/cshinjnu-eng/obsidian-ask-llm-link" target="_blank">GitHub ↗</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="bt-event bt-event-major">
+              <div class="bt-meta">
+                <span class="bt-date mono">05.04</span>
+                <span class="bt-tag dev">开发</span>
+                <span class="bt-tag-live">● LIVE</span>
+              </div>
+              <div class="bt-body">
+                <h4>TimeBox — 后端上线 + Hermes 智能体</h4>
+                <p>FastAPI + Uvicorn 后端部署至云服务器。自研 Hermes Agent 编排：3 工具（日志记录 / FTS5 全文检索 / Markdown 记忆管理）、最多 3 轮工具循环、Frozen Snapshot 记忆策略、用户级数据隔离。前端实现双模式切换（本地 JSON 指令 / 云端 Agent）。</p>
+              </div>
+            </div>
+
+            <div class="bt-event bt-event-major">
+              <div class="bt-meta">
+                <span class="bt-date mono">05.08</span>
+                <span class="bt-tag dev">开发</span>
+                <span class="bt-tag-live">◎ 工具</span>
+              </div>
+              <div class="bt-body">
+                <h4>Anthropic → Gemini 转接代理</h4>
+                <p>Anthropic Messages API 原生转换为 Google Gemini generateContent 格式，支持 streaming、tool_use 双向转换、image blocks，无中间层，纯 aiohttp 实现，GEMINI_API_KEY 直连 Google AI Studio。</p>
+              </div>
+            </div>
+
             <div class="bt-event bt-event-now">
               <div class="bt-meta">
                 <span class="bt-date mono">NOW</span>
@@ -342,11 +388,11 @@
               <span class="pc-status incubator">◆ 入驻孵化器</span>
             </div>
             <h3>TimeBox</h3>
-            <p>本地优先个人信息管理 App。React + Vite + Capacitor，v1.2.0 APK 已发布。正在入驻粤港澳大湾区创新创业孵化基地。</p>
+            <p>本地优先个人信息管理 App。React + Vite + Capacitor + FastAPI 后端，v1.3.0 已发布。内置 Hermes 自研智能体：工具调用循环、FTS5 全文日志检索、Markdown 记忆管理，双模式 AI 架构（本地 JSON 指令 / 云端 Agent）。正在入驻粤港澳大湾区创新创业孵化基地。</p>
           </div>
           <div class="pc-impact">
-            <span class="pi-label">B 端价值</span>
-            <span class="pi-text">本地化数据管理 · 潜在企业知识管理场景</span>
+            <span class="pi-label">技术亮点</span>
+            <span class="pi-text">本地 IndexedDB + 云端 SQLite 双存储 · 自研 Agent 编排 · SSE 流式输出</span>
           </div>
           <div class="pc-links">
             <a href="https://github.com/cshinjnu-eng/timebox-app" target="_blank" class="pcl-github">GitHub ↗</a>
@@ -408,23 +454,42 @@
           </div>
         </article>
 
-        <article class="proj-card reveal" style="--delay:160ms">
+        <article class="proj-card reveal" style="--delay:0ms">
           <div class="pc-top">
             <div class="pc-tags">
-              <span class="pc-cat">AI 内容 · 直播</span>
-              <span class="pc-status building">⚙ 开发中</span>
+              <span class="pc-cat">Obsidian 插件</span>
+              <span class="pc-status open">◎ 开源</span>
             </div>
-            <h3>OpenClaw 小剧场</h3>
-            <p>AI 角色扮演剧场工具。用户主导剧情走向，支持突发事件和角色特质修改，联动蒸馏人 Skill，用于量产整活视频和直播互动。</p>
+            <h3>Ask LLM & Link</h3>
+            <p>Obsidian 插件：选中内容右键提问，回答存为新笔记，原文自动高亮并插入 wiki link。支持文字、表格、代码块、图片多类型，全文上下文注入，三 Provider（OpenAI / Anthropic / Ollama），目录结构镜像，笔记模板自定义。</p>
           </div>
           <div class="pc-impact">
-            <span class="pi-label">商业逻辑</span>
-            <span class="pi-text">内容量产降本 · 直播留存增益 · 接入前任、同事、老板等Skill 生态</span>
+            <span class="pi-label">技术亮点</span>
+            <span class="pi-text">多模态内容识别 · 自动高亮+链接 · 目录镜像策略</span>
           </div>
           <div class="pc-links">
-            <span class="pcl-pending">截图/视频展示即将补充</span>
+            <a href="https://github.com/cshinjnu-eng/obsidian-ask-llm-link" target="_blank" class="pcl-github">GitHub ↗</a>
           </div>
         </article>
+
+        <article class="proj-card reveal" style="--delay:0ms">
+          <div class="pc-top">
+            <div class="pc-tags">
+              <span class="pc-cat">开发者工具</span>
+              <span class="pc-status open">◎ 工具</span>
+            </div>
+            <h3>Anthropic → Gemini 代理</h3>
+            <p>将 Anthropic Messages API 原生转换为 Google Gemini generateContent 格式的本地反向代理。支持 streaming、tool_use / functionCall 双向转换、image blocks 及 system prompt，无 LiteLLM 中间层，纯 aiohttp 实现。</p>
+          </div>
+          <div class="pc-impact">
+            <span class="pi-label">使用场景</span>
+            <span class="pi-text">Claude Code 直连 Gemini API · 国内开发者降本</span>
+          </div>
+          <div class="pc-links">
+            <span class="pcl-pending">本地工具，代码整理中</span>
+          </div>
+        </article>
+
 
       </div>
 
@@ -460,7 +525,7 @@
             <div class="wfh-val">满足新技术一键套用的同时</div>
             <div class="wfh-time">相同流程1 个晚上即可完成</div>
           </div>
-          <div class="wfh-note">通过训练 Antigravity + Claude Code 学习权威机构内部课程资料，实现生信分析流程的完全自动化</div>
+          <div class="wfh-note">通过 Claude Code 系统学习权威机构内部课程资料，实现生信分析流程的完全自动化</div>
         </div>
 
         <div class="wf-cards">
@@ -470,10 +535,9 @@
               <span class="wfc-icon">🧠</span>
               <h3>Obsidian 知识架构师系统</h3>
             </div>
-            <p>为 OpenClaw / Antigravity / Claude Code 分别训练专属 Skill，与 Obsidian 整合，实现项目开发、生活状态、科研进度的自主化管理。QRTA 协议 + Local
-              REST API 实现跨工具自动同步。</p>
+            <p>为 Claude Code 训练专属 Skill，与 Obsidian 整合，实现项目开发、生活状态、科研进度的自主化管理。Local REST API 实现跨工具自动同步。</p>
             <div class="wfc-stack">
-              <span>Claude Code</span><span>OpenClaw</span><span>Antigravity</span><span>Obsidian</span>
+              <span>Claude Code</span><span>Obsidian</span><span>Local REST API</span>
             </div>
           </div>
 
@@ -499,16 +563,6 @@
             </div>
           </div>
 
-          <div class="wfc reveal wfc-emphasis">
-            <div class="wfc-head">
-              <span class="wfc-icon">⚡</span>
-              <h3>opc.ren 社群见证者 · 商户</h3>
-            </div>
-            <p>2026年2月20日加入 OpenClaw 社群，亲历 opc.ren 从0到1全程建设，是平台商户之一。Claude Code 与 OpenClaw 的深度重度用户。废寝忘食地折腾，是常态。</p>
-            <div class="wfc-stack">
-              <span>opc.ren 商户</span><span>深度用户</span><span>社群见证者</span>
-            </div>
-          </div>
 
         </div>
       </div>
@@ -598,20 +652,19 @@
             <div class="ts-group">
               <span class="ts-cat">开发</span>
               <div class="ts-tags">
-                <span>HTML/CSS/JS</span><span>React +
-                  Vite</span><span>Capacitor</span><span>FastAPI</span><span>Node.js</span>
+                <span>HTML/CSS/JS</span><span>React + Vite</span><span>Capacitor</span><span>TypeScript</span><span>Node.js</span>
               </div>
             </div>
             <div class="ts-group">
-              <span class="ts-cat">服务器 / 运维</span>
+              <span class="ts-cat">后端 / 云服务器</span>
               <div class="ts-tags">
-                <span>Linux 服务器安装配置</span><span>课题组服务器运维</span><span>Ubuntu</span><span>WSL2</span><span>Tailscale</span><span>Vercel</span><span>阿里云 DNS</span>
+                <span>FastAPI</span><span>Uvicorn</span><span>httpx</span><span>SQLite + FTS5</span><span>SSE 流式输出</span><span>云服务器部署</span><span>Ubuntu</span><span>Vercel</span><span>阿里云 DNS</span>
               </div>
             </div>
             <div class="ts-group">
               <span class="ts-cat">AI 工具</span>
               <div class="ts-tags">
-                <span>Claude Code</span><span>OpenClaw</span><span>Antigravity</span><span>Obsidian</span>
+                <span>Claude Code</span><span>Obsidian</span>
               </div>
             </div>
           </div>
