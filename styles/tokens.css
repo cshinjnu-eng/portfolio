@@ -1,0 +1,22 @@
+:root {
+  --paper: #f3efe5;
+  --paper-deep: #e7e0d2;
+  --ink: #141513;
+  --ink-soft: #302f2a;
+  --muted: #6f6b62;
+  --line: rgba(20, 21, 19, 0.18);
+  --line-light: rgba(255, 255, 255, 0.18);
+  --red: #d84432;
+  --red-bright: #f05843;
+  --green: #315746;
+  --cream: #faf6ed;
+  --serif: "Noto Serif SC", serif;
+  --display: "Readex Pro", "Noto Sans SC", sans-serif;
+  --sans: "Noto Sans SC", sans-serif;
+  --mono: "IBM Plex Mono", monospace;
+  --hand: "LXGW WenKai", cursive;
+  --page: min(1440px, calc(100vw - 64px));
+  --section-space: clamp(96px, 11vw, 168px);
+  --radius-media: 16px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
