@@ -33,6 +33,12 @@
 - [x] Humanized visible Chinese copy across the homepage, project data, design board, and resume
 - [x] Expanded the research/open-source index to eight described small projects
 - [x] Re-ran desktop, mobile, reduced-motion, and two-page resume checks after the refresh
+- [x] Verified four public 小红书 videos and localized their cover images for stable display
+- [x] Added a native, initially collapsed content-output archive to the self-media section
+- [x] Updated the dated account snapshot to 24 public notes, 4 public videos, and 139,821 impressions
+- [x] Corrected the AI+ innovation competition record to 2025 third prize and 2026 second prize
+- [x] Rebuilt and rechecked the two-page resume after the media and award evidence update
+- [x] Revalidated the expanded media archive at 1440 px and 390 px without horizontal overflow
 
 ## Failed
 

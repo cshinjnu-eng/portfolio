@@ -29,12 +29,21 @@ def main() -> None:
         "2 个真实项目",
         "校级创新创业项目",
         "创业团队核心成员",
+        "4 条公开视频",
+        "三等奖 · 2025",
+        "二等奖 · 2026",
         "科研 Agent / 单细胞分析平台",
     ]
     for phrase in required:
         assert phrase in text, f"required phrase is missing: {phrase}"
 
-    forbidden = ["正在申报国家级", "已发表 3 篇", "GoGoWork · 独立开发", "入驻粤港澳"]
+    forbidden = [
+        "正在申报国家级",
+        "已发表 3 篇",
+        "GoGoWork · 独立开发",
+        "入驻粤港澳",
+        "校二等奖 · 2026",
+    ]
     for phrase in forbidden:
         assert phrase not in text, f"forbidden stale claim found: {phrase}"
 

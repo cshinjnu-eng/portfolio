@@ -169,6 +169,14 @@
     min-height: 520px;
   }
 
+  .media-archive {
+    grid-column: 1;
+  }
+
+  .media-video-grid {
+    grid-template-columns: 1fr;
+  }
+
   .experience-records {
     grid-template-columns: 1fr;
     gap: 48px;
@@ -429,6 +437,34 @@
   .media-profile h3 {
     margin-top: 48px;
     font-size: 27px;
+  }
+
+  .media-archive summary {
+    grid-template-columns: 1fr auto;
+    gap: 8px 16px;
+    padding: 18px 0;
+  }
+
+  .media-archive summary span {
+    grid-column: 1 / -1;
+  }
+
+  .media-archive summary b {
+    font-size: 22px;
+  }
+
+  .media-video-item {
+    grid-template-columns: 112px 1fr 16px;
+    gap: 12px;
+    padding: 16px 0;
+  }
+
+  .media-video-item img {
+    width: 112px;
+  }
+
+  .media-video-item b {
+    font-size: 15px;
   }
 
   .risk-case figure {

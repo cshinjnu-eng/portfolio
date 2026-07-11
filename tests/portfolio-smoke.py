@@ -17,28 +17,83 @@ def require(condition: bool, message: str) -> None:
 
 def inspect_page(page, name: str) -> dict:
     errors: list[str] = []
-    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    page.on(
+        "console", lambda msg: errors.append(msg.text) if msg.type == "error" else None
+    )
     page.on("pageerror", lambda error: errors.append(str(error)))
     response = page.goto(BASE_URL, wait_until="domcontentloaded")
-    require(response is not None and response.status == 200, f"{name}: homepage did not return 200")
+    require(
+        response is not None and response.status == 200,
+        f"{name}: homepage did not return 200",
+    )
 
     initial_video_src = page.locator("[data-media-dialog] video").get_attribute("src")
     require(initial_video_src is None, f"{name}: scrna video loaded before user action")
     require(page.locator("h1").count() == 1, f"{name}: expected one H1")
-    require(page.get_by_text("独立构建者。", exact=True).count() == 1, f"{name}: identity line missing")
-    require(page.locator('img[src*="portrait"]').count() == 0, f"{name}: portrait is still used on the website")
-    require(page.get_by_text("时机成熟了。我想参与其中。", exact=True).count() == 0, f"{name}: rejected hero copy remains")
-    require(page.locator(".research-list > a").count() == 8, f"{name}: expected eight small projects")
-    require(page.locator('img[src*="timebox-ai-v2"]').count() == 1, f"{name}: TimeBox v2 evidence is missing")
-    require(page.locator('img[src*="gogowork-marketplace"]').count() == 1, f"{name}: GoGoWork marketplace evidence is missing")
+    require(
+        page.get_by_text("独立构建者。", exact=True).count() == 1,
+        f"{name}: identity line missing",
+    )
+    require(
+        page.locator('img[src*="portrait"]').count() == 0,
+        f"{name}: portrait is still used on the website",
+    )
+    require(
+        page.get_by_text("时机成熟了。我想参与其中。", exact=True).count() == 0,
+        f"{name}: rejected hero copy remains",
+    )
+    require(
+        page.locator(".research-list > a").count() == 8,
+        f"{name}: expected eight small projects",
+    )
+    require(
+        page.locator('img[src*="timebox-ai-v2"]').count() == 1,
+        f"{name}: TimeBox v2 evidence is missing",
+    )
+    require(
+        page.locator('img[src*="gogowork-marketplace"]').count() == 1,
+        f"{name}: GoGoWork marketplace evidence is missing",
+    )
+    archive = page.locator(".media-archive")
+    require(archive.count() == 1, f"{name}: media archive is missing")
+    require(
+        archive.get_attribute("open") is None,
+        f"{name}: media archive should start collapsed",
+    )
+    require(
+        page.locator("[data-public-video]").count() == 4,
+        f"{name}: expected four public videos",
+    )
+    video_hrefs = page.locator("[data-public-video]").evaluate_all(
+        "els => els.map(el => el.getAttribute('href'))"
+    )
+    expected_ids = {
+        "6a23b6a7000000003502f93f",
+        "6a0d05180000000036001c6d",
+        "6a095879000000003501fbf5",
+        "6a06ab44000000003502052f",
+    }
+    require(
+        all(any(note_id in href for href in video_hrefs) for note_id in expected_ids),
+        f"{name}: public video IDs do not match the audit",
+    )
+    archive.locator("summary").click()
+    require(
+        archive.get_attribute("open") is not None,
+        f"{name}: media archive did not expand",
+    )
 
     page.wait_for_load_state("networkidle")
     page.locator('[data-project-trigger="mirror"]').click()
     require(
-        page.locator('[data-project-trigger="mirror"]').get_attribute("aria-expanded") == "true",
+        page.locator('[data-project-trigger="mirror"]').get_attribute("aria-expanded")
+        == "true",
         f"{name}: Mirror did not expand",
     )
-    require(not page.locator("#project-mirror").get_attribute("hidden"), f"{name}: Mirror panel is hidden")
+    require(
+        not page.locator("#project-mirror").get_attribute("hidden"),
+        f"{name}: Mirror panel is hidden",
+    )
 
     state = page.evaluate(
         """() => ({
@@ -46,10 +101,13 @@ def inspect_page(page, name: str) -> dict:
           viewportWidth: innerWidth,
           heroReady: document.querySelector('[data-hero]')?.classList.contains('is-ready'),
           scrnaMetric: document.querySelector('#scrna-omics')?.textContent.includes('13'),
+          publicVideos: document.querySelectorAll('[data-public-video]').length,
           resumeHref: document.querySelector('a[href*="AdventureX"]')?.getAttribute('href')
         })"""
     )
-    require(state["bodyWidth"] == state["viewportWidth"], f"{name}: horizontal overflow")
+    require(
+        state["bodyWidth"] == state["viewportWidth"], f"{name}: horizontal overflow"
+    )
     require(state["heroReady"], f"{name}: hero reveal did not initialize")
     require(state["scrnaMetric"], f"{name}: scrna evidence is missing")
     require(state["resumeHref"], f"{name}: resume link is missing")
@@ -78,8 +136,13 @@ def main() -> int:
               overflow: document.body.scrollWidth === innerWidth
             })"""
         )
-        require(results["reduced_motion"]["loaded"] is None, "reduced motion loaded the hero video")
-        require(results["reduced_motion"]["overflow"], "reduced-motion layout overflowed")
+        require(
+            results["reduced_motion"]["loaded"] is None,
+            "reduced motion loaded the hero video",
+        )
+        require(
+            results["reduced_motion"]["overflow"], "reduced-motion layout overflowed"
+        )
         browser.close()
 
     print(json.dumps(results, ensure_ascii=False, indent=2))
