@@ -27,6 +27,12 @@
 - [x] Passed HTTP and direct-file website smoke tests at desktop and mobile widths
 - [x] Verified video lazy loading, dialog controls, reduced motion, and focus return
 - [x] Verified the resume as two A4 pages with selectable Chinese text and factual guardrails
+- [x] Replaced the website portrait with a non-identifiable ink-wash research-builder silhouette
+- [x] Replaced TimeBox's dark legacy screenshots with warm-paper v2 timer and Hermes views
+- [x] Replaced GoGoWork's old long image with the PC marketplace and delivery workflow prototype
+- [x] Humanized visible Chinese copy across the homepage, project data, design board, and resume
+- [x] Expanded the research/open-source index to eight described small projects
+- [x] Re-ran desktop, mobile, reduced-motion, and two-page resume checks after the refresh
 
 ## Failed
 

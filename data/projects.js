@@ -6,7 +6,8 @@ window.PORTFOLIO_PROJECTS = Object.freeze([
     index: "01",
     title: "scrna-omics",
     category: "RESEARCH × PRODUCT",
-    summary: "把分析师的判断，变成可复用、可审计的科研操作系统。",
+    summary:
+      "用 Skills、Agents 和 Hooks 记录单细胞分析的方法、决策与复核结果。",
     role: "独立设计与开发",
     facts: ["13 SKILLS", "6 AGENTS", "12 HOOKS", "2 REAL ANALYSES"],
     links: Object.freeze([
@@ -35,7 +36,7 @@ window.PORTFOLIO_PROJECTS = Object.freeze([
     index: "02",
     title: "TimeBox",
     category: "ANDROID × PERSONAL AGENT",
-    summary: "让每天的时间行为沉淀成可以回看的个人成长轨迹。",
+    summary: "记录计时、待办和想法，再用 Hermes 完成补录与复盘。",
     role: "独立设计与开发",
     facts: ["GROWTH RECORD", "HERMES MEMORY", "AI INTERACTION"],
     links: Object.freeze([
@@ -48,14 +49,14 @@ window.PORTFOLIO_PROJECTS = Object.freeze([
         href: "https://github.com/cshinjnu-eng/timebox-release",
       }),
     ]),
-    media: Object.freeze({ poster: "assets/projects/timebox-beige.png" }),
+    media: Object.freeze({ poster: "assets/projects/timebox-ai-v2.png" }),
   }),
   Object.freeze({
     id: "mirror",
     index: "03",
     title: "镜子",
     category: "MULTI-AGENT × RESEARCH SERVICE",
-    summary: "从一句观点，到一份经过信源分级和事实核查的个性化报告。",
+    summary: "将一句观点拆成调研、信源分级、事实核查和报告组装。",
     role: "独立设计与开发",
     facts: ["3 REPORT SYSTEMS", "36 TESTS", "DELIVERED REPORTS"],
     links: Object.freeze([
@@ -78,7 +79,7 @@ window.PORTFOLIO_PROJECTS = Object.freeze([
     index: "04",
     title: "社畜小猫",
     category: "AI COMPANION × H5 GAME",
-    summary: "一个有动作、状态、长期记忆，也会主动写信的 AI 桌宠。",
+    summary: "一只有逐帧动作、长期记忆和主动信件的 AI 桌宠。",
     role: "独立设计与开发",
     facts: ["LONG-TERM MEMORY", "TOOL USE", "FRAME ANIMATION"],
     links: Object.freeze([
@@ -98,7 +99,8 @@ window.PORTFOLIO_PROJECTS = Object.freeze([
     index: "05",
     title: "GoGoWork",
     category: "TEAM STARTUP × COLLABORATION",
-    summary: "把需求结构化、可信匹配和托管交付连接为短周期协作流程。",
+    summary:
+      "团队正在验证一套包含任务发布、人才匹配、资金托管和交付验收的流程。",
     role: "创业团队核心成员",
     facts: ["CORE TEAM", "WTEAM UPCOMING", "ADVENTUREX UPCOMING"],
     links: Object.freeze([
@@ -109,8 +111,8 @@ window.PORTFOLIO_PROJECTS = Object.freeze([
       }),
     ]),
     media: Object.freeze({
-      poster: "assets/projects/gogowork-demo.png",
-      secondary: "assets/projects/gogowork-story.jpg",
+      poster: "assets/projects/gogowork-marketplace.png",
+      secondary: "assets/projects/gogowork-delivery.png",
     }),
   }),
 ]);

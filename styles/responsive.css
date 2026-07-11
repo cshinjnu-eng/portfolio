@@ -404,6 +404,17 @@
     padding: 14px;
   }
 
+  .gogowork-visual img:first-of-type {
+    width: 92%;
+  }
+
+  .gogowork-visual img:nth-of-type(2) {
+    right: 10px;
+    bottom: 20px;
+    width: 68%;
+    height: 58%;
+  }
+
   .cat-visual {
     grid-template-columns: 0.78fr 1.22fr;
     gap: 8px;
@@ -448,6 +459,12 @@
 
   .research-list span {
     grid-column: 1 / -1;
+  }
+
+  .research-list p {
+    display: block;
+    grid-column: 1;
+    line-height: 1.65;
   }
 
   .contact {

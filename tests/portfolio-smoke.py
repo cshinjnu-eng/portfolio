@@ -26,6 +26,11 @@ def inspect_page(page, name: str) -> dict:
     require(initial_video_src is None, f"{name}: scrna video loaded before user action")
     require(page.locator("h1").count() == 1, f"{name}: expected one H1")
     require(page.get_by_text("独立构建者。", exact=True).count() == 1, f"{name}: identity line missing")
+    require(page.locator('img[src*="portrait"]').count() == 0, f"{name}: portrait is still used on the website")
+    require(page.get_by_text("时机成熟了。我想参与其中。", exact=True).count() == 0, f"{name}: rejected hero copy remains")
+    require(page.locator(".research-list > a").count() == 8, f"{name}: expected eight small projects")
+    require(page.locator('img[src*="timebox-ai-v2"]').count() == 1, f"{name}: TimeBox v2 evidence is missing")
+    require(page.locator('img[src*="gogowork-marketplace"]').count() == 1, f"{name}: GoGoWork marketplace evidence is missing")
 
     page.wait_for_load_state("networkidle")
     page.locator('[data-project-trigger="mirror"]').click()
