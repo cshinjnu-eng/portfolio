@@ -31,7 +31,7 @@ def inspect_page(page, name: str) -> dict:
     require(initial_video_src is None, f"{name}: scrna video loaded before user action")
     require(page.locator("h1").count() == 1, f"{name}: expected one H1")
     require(
-        page.get_by_text("独立构建者。", exact=True).count() == 1,
+        page.get_by_text("缺的工具，自己写。", exact=True).count() == 1,
         f"{name}: identity line missing",
     )
     require(
@@ -84,11 +84,19 @@ def inspect_page(page, name: str) -> dict:
     )
     require(
         page.get_by_text(
-            "数据来自 CC-Switch 本地统计；共 8,798,010,310 Token。Antigravity 与绕过 CC-Switch 的 API 尚未计入。该数字用于说明构建密度，不等同于产品成果。",
+            "数据来自 CC-Switch 本地统计，共 8,798,010,310 Token。Antigravity 和绕开 CC-Switch 的 API 还没算进去。这组数字只记录我写了多少、跑了多少，不代表产品效果。",
             exact=True,
         ).count()
         == 1,
         f"{name}: workflow evidence qualifier is missing",
+    )
+    require(
+        page.get_by_text("我们可以聊聊。", exact=True).count() == 1,
+        f"{name}: revised collaboration invitation is missing",
+    )
+    require(
+        page.get_by_text("正在寻找合作。", exact=True).count() == 0,
+        f"{name}: rejected collaboration copy remains",
     )
     require(
         page.locator(".proof-strip").count() == 0,

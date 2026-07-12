@@ -214,8 +214,12 @@
   }
 
   .hero-title {
-    font-size: clamp(50px, 15vw, 72px);
+    font-size: clamp(42px, 11.1vw, 50px);
     letter-spacing: -0.065em;
+  }
+
+  .mobile-only {
+    display: block;
   }
 
   .hero-bottom > p {

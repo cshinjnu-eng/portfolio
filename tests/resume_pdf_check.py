@@ -26,13 +26,19 @@ def main() -> None:
         "3 篇 SCI 论文在投",
         "scrna-omics",
         "13 个领域 Skills",
-        "2 个真实项目",
+        "2 个科研项目",
         "校级创新创业项目",
         "创业团队核心成员",
         "4 条公开视频",
         "三等奖 · 2025",
         "二等奖 · 2026",
         "科研 Agent / 单细胞分析平台",
+        "8.80B Token",
+        "44,735 次调用",
+        "不等同于产品使用量或成果",
+        "36 项测试",
+        "2026-07 快照",
+        "可体验的 AI4S 原型",
     ]
     for phrase in required:
         assert phrase in text, f"required phrase is missing: {phrase}"
@@ -43,6 +49,10 @@ def main() -> None:
         "GoGoWork · 独立开发",
         "入驻粤港澳",
         "校二等奖 · 2026",
+        "WTeam 展出",
+        "AdventureX 现场宣传正在筹备",
+        "发明专利 1 项",
+        "FINAL URL PENDING",
     ]
     for phrase in forbidden:
         assert phrase not in text, f"forbidden stale claim found: {phrase}"

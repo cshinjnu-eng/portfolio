@@ -7,7 +7,7 @@ window.PORTFOLIO_PROJECTS = Object.freeze([
     title: "scrna-omics",
     category: "RESEARCH × PRODUCT",
     summary:
-      "用 Skills、Agents 和 Hooks 记录单细胞分析的方法、决策与复核结果。",
+      "用 Skills、Agents 和 Hooks 记录单细胞分析的方法、判断与复核过程。",
     role: "独立设计与开发",
     facts: ["13 SKILLS", "6 AGENTS", "12 HOOKS", "2 REAL ANALYSES"],
     links: Object.freeze([
@@ -36,7 +36,7 @@ window.PORTFOLIO_PROJECTS = Object.freeze([
     index: "02",
     title: "TimeBox",
     category: "ANDROID × PERSONAL AGENT",
-    summary: "记录计时、待办和想法，再用 Hermes 完成补录与复盘。",
+    summary: "记录时间、待办和想法，再让 Hermes 帮忙补录和复盘。",
     role: "独立设计与开发",
     facts: ["GROWTH RECORD", "HERMES MEMORY", "AI INTERACTION"],
     links: Object.freeze([
@@ -56,7 +56,7 @@ window.PORTFOLIO_PROJECTS = Object.freeze([
     index: "03",
     title: "镜子",
     category: "MULTI-AGENT × RESEARCH SERVICE",
-    summary: "将一句观点拆成调研、信源分级、事实核查和报告组装。",
+    summary: "一句观点，分成调研、信源分级、事实核查和报告组装四步完成。",
     role: "独立设计与开发",
     facts: ["3 REPORT SYSTEMS", "36 TESTS", "DELIVERED REPORTS"],
     links: Object.freeze([
@@ -99,8 +99,7 @@ window.PORTFOLIO_PROJECTS = Object.freeze([
     index: "05",
     title: "GoGoWork",
     category: "TEAM STARTUP × COLLABORATION",
-    summary:
-      "团队正在验证一套包含任务发布、人才匹配、资金托管和交付验收的流程。",
+    summary: "团队正在验证任务发布、人才匹配、资金托管和交付验收这套流程。",
     role: "创业团队核心成员",
     facts: ["CORE TEAM", "WTEAM UPCOMING", "ADVENTUREX UPCOMING"],
     links: Object.freeze([

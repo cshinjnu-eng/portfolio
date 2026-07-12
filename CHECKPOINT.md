@@ -39,6 +39,17 @@
 - [x] Corrected the AI+ innovation competition record to 2025 third prize and 2026 second prize
 - [x] Rebuilt and rechecked the two-page resume after the media and award evidence update
 - [x] Revalidated the expanded media archive at 1440 px and 390 px without horizontal overflow
+- [x] Added the Builder in Motion path from research problem to tested product workflow
+- [x] Added a qualified local build snapshot: 2026-03 to 2026-07, 12 models, 44,735 requests, and 8.80B total tokens
+- [x] Reworked the hero into a stable resting composition with pointer-led parallax, light-field response, magnetic CTAs, counters, and scroll progress
+- [x] Preserved full journey readability with JavaScript disabled and reduced motion enabled
+- [x] Verified desktop, 1024 px tablet, real touch mobile, reduced-motion, and no-JavaScript states
+- [x] Drafted all AdventureX 2026 application fields with character counts and evidence notes
+- [x] Humanized the application answers and separated motivation, technical judgment, and imagination
+- [x] Rebuilt the two-page resume with synchronized product wording, a real website QR code, and factual guardrails
+- [x] Removed the unverified patent-status line from public application and resume materials
+- [x] Adapted the user-edited anti-AI copy to the current page structure without restoring obsolete sections or copying the old draft verbatim
+- [x] Rechecked the adapted copy at desktop, tablet, mobile, reduced-motion, and no-JavaScript states
 
 ## Failed
 

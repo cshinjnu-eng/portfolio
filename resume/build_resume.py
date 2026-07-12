@@ -9,6 +9,9 @@ from PIL import Image
 from reportlab.lib.colors import HexColor
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import ImageReader
+from reportlab.graphics import renderPDF
+from reportlab.graphics.barcode import qr
+from reportlab.graphics.shapes import Drawing
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -17,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from resume.resume_data import (  # noqa: E402
+    BUILD_SNAPSHOT,
     COLLABORATION,
     CONTACT,
     EDUCATION,
@@ -56,7 +60,11 @@ def register_fonts() -> None:
     for name, path, subfont in font_specs:
         if not Path(path).exists():
             raise FileNotFoundError(f"Required local font is missing: {path}")
-        font = TTFont(name, path, subfontIndex=subfont) if subfont is not None else TTFont(name, path)
+        font = (
+            TTFont(name, path, subfontIndex=subfont)
+            if subfont is not None
+            else TTFont(name, path)
+        )
         pdfmetrics.registerFont(font)
 
 
@@ -112,7 +120,9 @@ def section_label(c: canvas.Canvas, label: str, title: str, y: float) -> float:
     return y - 40
 
 
-def draw_cover_image(c: canvas.Canvas, image_path: Path, x: float, y: float, w: float, h: float) -> None:
+def draw_cover_image(
+    c: canvas.Canvas, image_path: Path, x: float, y: float, w: float, h: float
+) -> None:
     with Image.open(image_path) as image:
         image_w, image_h = image.size
     scale = max(w / image_w, h / image_h)
@@ -123,7 +133,9 @@ def draw_cover_image(c: canvas.Canvas, image_path: Path, x: float, y: float, w: 
     path = c.beginPath()
     path.roundRect(x, y, w, h, 5)
     c.clipPath(path, stroke=0, fill=0)
-    c.drawImage(ImageReader(str(image_path)), draw_x, draw_y, draw_w, draw_h, mask="auto")
+    c.drawImage(
+        ImageReader(str(image_path)), draw_x, draw_y, draw_w, draw_h, mask="auto"
+    )
     c.restoreState()
 
 
@@ -171,7 +183,19 @@ def draw_profile(c: canvas.Canvas, y: float) -> float:
     c.setFillColor(RED)
     c.setFont(FONT_MONO, 6.5)
     c.drawString(MARGIN_X + 12, y - 15, "PROFILE")
-    return draw_wrapped(c, PROFILE, MARGIN_X + 12, y - 31, PAGE_W - 2 * MARGIN_X - 24, size=8.2, leading=12.4, color=INK) - 14
+    return (
+        draw_wrapped(
+            c,
+            PROFILE,
+            MARGIN_X + 12,
+            y - 31,
+            PAGE_W - 2 * MARGIN_X - 24,
+            size=8.2,
+            leading=12.4,
+            color=INK,
+        )
+        - 14
+    )
 
 
 def draw_page_one(c: canvas.Canvas) -> None:
@@ -186,7 +210,9 @@ def draw_page_one(c: canvas.Canvas) -> None:
     c.drawString(MARGIN_X, y, f"{EDUCATION['school']}  ·  {EDUCATION['major']}")
     c.setFillColor(MUTED)
     c.setFont(FONT_BODY, 6.8)
-    c.drawRightString(PAGE_W - MARGIN_X, y, f"{EDUCATION['date']}  ·  {EDUCATION['location']}")
+    c.drawRightString(
+        PAGE_W - MARGIN_X, y, f"{EDUCATION['date']}  ·  {EDUCATION['location']}"
+    )
     y -= 27
 
     y = section_label(c, "02 / RESEARCH", "科研经历", y)
@@ -202,7 +228,19 @@ def draw_page_one(c: canvas.Canvas) -> None:
     for bullet in RESEARCH["bullets"]:
         c.setFillColor(RED)
         c.circle(MARGIN_X + 2.5, y + 2.5, 1.5, fill=1, stroke=0)
-        y = draw_wrapped(c, bullet, MARGIN_X + 12, y + 6, PAGE_W - 2 * MARGIN_X - 12, size=7.9, leading=11.5, color=INK) - 4
+        y = (
+            draw_wrapped(
+                c,
+                bullet,
+                MARGIN_X + 12,
+                y + 6,
+                PAGE_W - 2 * MARGIN_X - 12,
+                size=7.9,
+                leading=11.5,
+                color=INK,
+            )
+            - 4
+        )
 
     y = section_label(c, "03 / SIGNATURE CROSSOVER", "核心项目", y - 2)
     c.setFillColor(INK)
@@ -211,7 +249,19 @@ def draw_page_one(c: canvas.Canvas) -> None:
     c.setFillColor(RED)
     c.setFont(FONT_BODY, 6.5)
     c.drawRightString(PAGE_W - MARGIN_X, y, SCRNA_OMICS["date"])
-    y = draw_wrapped(c, SCRNA_OMICS["summary"], MARGIN_X, y - 18, PAGE_W - 2 * MARGIN_X, size=7.9, leading=11.8, color=INK) - 3
+    y = (
+        draw_wrapped(
+            c,
+            SCRNA_OMICS["summary"],
+            MARGIN_X,
+            y - 18,
+            PAGE_W - 2 * MARGIN_X,
+            size=7.9,
+            leading=11.8,
+            color=INK,
+        )
+        - 3
+    )
     c.setFillColor(MUTED)
     c.setFont(FONT_MONO, 5.9)
     c.drawString(MARGIN_X, y, SCRNA_OMICS["links"])
@@ -220,7 +270,12 @@ def draw_page_one(c: canvas.Canvas) -> None:
     c.setFillColor(INK)
     c.roundRect(MARGIN_X, y - 63, PAGE_W - 2 * MARGIN_X, 63, 5, fill=1, stroke=0)
     metric_width = (PAGE_W - 2 * MARGIN_X) / 4
-    metrics = [("13", "SKILLS"), ("6", "AGENTS"), ("12", "HOOKS"), ("2", "REAL ANALYSES")]
+    metrics = [
+        ("13", "SKILLS"),
+        ("6", "AGENTS"),
+        ("12", "HOOKS"),
+        ("2", "REAL ANALYSES"),
+    ]
     for index, (value, label) in enumerate(metrics):
         metric_x = MARGIN_X + index * metric_width
         if index:
@@ -244,6 +299,18 @@ def draw_page_one(c: canvas.Canvas) -> None:
         y,
         "R / Python · Seurat / Scanpy · scRNA-seq / scTCR-seq · 细胞通讯 · 轨迹推断 · Linux",
     )
+    y -= 27
+    c.setFillColor(PALE_RED)
+    c.roundRect(MARGIN_X, y - 34, PAGE_W - 2 * MARGIN_X, 42, 4, fill=1, stroke=0)
+    c.setFillColor(RED)
+    c.setFont(FONT_MONO, 6.2)
+    c.drawString(MARGIN_X + 11, y - 5, "LOCAL BUILD SNAPSHOT")
+    c.setFillColor(INK)
+    c.setFont(FONT_SERIF, 8.3)
+    c.drawString(MARGIN_X + 116, y - 5, BUILD_SNAPSHOT["headline"])
+    c.setFillColor(MUTED)
+    c.setFont(FONT_BODY, 6.2)
+    c.drawString(MARGIN_X + 11, y - 22, BUILD_SNAPSHOT["note"])
     draw_footer(c, 1)
 
 
@@ -259,15 +326,26 @@ def draw_header_page_two(c: canvas.Canvas) -> float:
 
     slot_x = PAGE_W - MARGIN_X - 72
     slot_y = TOP - 76
-    c.setStrokeColor(MUTED)
-    c.setDash(3, 2)
-    c.roundRect(slot_x, slot_y, 72, 72, 4, fill=0, stroke=1)
-    c.setDash()
+    qr_widget = qr.QrCodeWidget(CONTACT["website"])
+    qr_x1, qr_y1, qr_x2, qr_y2 = qr_widget.getBounds()
+    qr_size = 56
+    qr_drawing = Drawing(
+        qr_size,
+        qr_size,
+        transform=[
+            qr_size / (qr_x2 - qr_x1),
+            0,
+            0,
+            qr_size / (qr_y2 - qr_y1),
+            0,
+            0,
+        ],
+    )
+    qr_drawing.add(qr_widget)
+    renderPDF.draw(qr_drawing, c, slot_x + 8, slot_y + 15)
     c.setFillColor(MUTED)
-    c.setFont(FONT_BODY, 7)
-    c.drawCentredString(slot_x + 36, slot_y + 39, "个人网站二维码")
-    c.setFont(FONT_MONO, 5.5)
-    c.drawCentredString(slot_x + 36, slot_y + 26, "FINAL URL PENDING")
+    c.setFont(FONT_BODY, 5.8)
+    c.drawCentredString(slot_x + 36, slot_y + 4, "个人网站")
     c.setStrokeColor(INK)
     c.setLineWidth(1.4)
     c.line(MARGIN_X, TOP - 92, PAGE_W - MARGIN_X, TOP - 92)
@@ -284,7 +362,16 @@ def draw_project(c: canvas.Canvas, project: dict[str, str], y: float) -> float:
     c.setFillColor(MUTED)
     c.setFont(FONT_BODY, 6.2)
     c.drawRightString(PAGE_W - MARGIN_X, y, project["date"])
-    y = draw_wrapped(c, project["summary"], MARGIN_X, y - 14, PAGE_W - 2 * MARGIN_X, size=7.7, leading=11.2, color=MUTED)
+    y = draw_wrapped(
+        c,
+        project["summary"],
+        MARGIN_X,
+        y - 14,
+        PAGE_W - 2 * MARGIN_X,
+        size=7.7,
+        leading=11.2,
+        color=MUTED,
+    )
     c.setStrokeColor(LINE)
     c.line(MARGIN_X, y - 3, PAGE_W - MARGIN_X, y - 3)
     return y - 14
@@ -303,7 +390,16 @@ def draw_page_two(c: canvas.Canvas) -> None:
     c.setFillColor(INK)
     c.setFont(FONT_SERIF, 10.5)
     c.drawString(MARGIN_X, y, MEDIA["account"])
-    y = draw_wrapped(c, MEDIA["summary"], MARGIN_X, y - 15, PAGE_W - 2 * MARGIN_X, size=7.7, leading=11.2, color=MUTED)
+    y = draw_wrapped(
+        c,
+        MEDIA["summary"],
+        MARGIN_X,
+        y - 15,
+        PAGE_W - 2 * MARGIN_X,
+        size=7.7,
+        leading=11.2,
+        color=MUTED,
+    )
     c.setFillColor(RED)
     c.setFont(FONT_BODY, 6.2)
     c.drawString(MARGIN_X, y - 1, "  ·  ".join(MEDIA["facts"]))
@@ -356,7 +452,16 @@ def draw_page_two(c: canvas.Canvas) -> None:
     c.setFillColor(HexColor("#FFFFFF"))
     c.setFont(FONT_MONO, 6.2)
     c.drawString(box_x + 12, y - 9, "RESEARCH PRODUCT COLLABORATION")
-    draw_wrapped(c, COLLABORATION, box_x + 12, y - 25, box_w - 24, size=7.4, leading=10.5, color=HexColor("#FFFFFF"))
+    draw_wrapped(
+        c,
+        COLLABORATION,
+        box_x + 12,
+        y - 25,
+        box_w - 24,
+        size=7.4,
+        leading=10.5,
+        color=HexColor("#FFFFFF"),
+    )
     draw_footer(c, 2)
 
 

@@ -788,7 +788,7 @@
 
 .contact h2 {
   max-width: 1220px;
-  font-size: clamp(54px, 7.5vw, 112px);
+  font-size: clamp(54px, 6.1vw, 92px);
 }
 
 .contact h2 span {
