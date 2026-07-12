@@ -64,6 +64,42 @@ def inspect_page(page, name: str) -> dict:
         page.locator("[data-public-video]").count() == 4,
         f"{name}: expected four public videos",
     )
+    journey = page.locator("[data-builder-journey]")
+    require(journey.count() == 1, f"{name}: builder journey is missing")
+    require(
+        page.locator("[data-builder-step]").count() == 4,
+        f"{name}: expected four builder steps",
+    )
+    counter_values = page.locator("[data-count-value]").evaluate_all(
+        "els => els.map(el => el.dataset.countValue)"
+    )
+    require(
+        counter_values == ["44735", "12", "8.8"],
+        f"{name}: builder evidence counters are incorrect",
+    )
+    require(
+        "8.80 B Token"
+        in " ".join(page.locator(".builder-evidence").inner_text().split()),
+        f"{name}: long-range token evidence is missing",
+    )
+    require(
+        page.get_by_text(
+            "数据来自 CC-Switch 本地统计；共 8,798,010,310 Token。Antigravity 与绕过 CC-Switch 的 API 尚未计入。该数字用于说明构建密度，不等同于产品成果。",
+            exact=True,
+        ).count()
+        == 1,
+        f"{name}: workflow evidence qualifier is missing",
+    )
+    require(
+        page.locator(".proof-strip").count() == 0,
+        f"{name}: obsolete proof strip is still present",
+    )
+    risk = page.locator(".risk-case")
+    require(risk.count() == 1, f"{name}: risk project summary is missing")
+    require(
+        risk.get_attribute("open") is None,
+        f"{name}: risk project should start collapsed",
+    )
     video_hrefs = page.locator("[data-public-video]").evaluate_all(
         "els => els.map(el => el.getAttribute('href'))"
     )
@@ -77,14 +113,179 @@ def inspect_page(page, name: str) -> dict:
         all(any(note_id in href for href in video_hrefs) for note_id in expected_ids),
         f"{name}: public video IDs do not match the audit",
     )
-    archive.locator("summary").click()
+
+    magnetic = page.locator("[data-magnetic]").first
+    if name == "desktop":
+        page.keyboard.press("Tab")
+        keyboard_focus = page.evaluate(
+            """() => ({
+              label: document.activeElement?.getAttribute('aria-label'),
+              outline: getComputedStyle(document.activeElement).outlineStyle
+            })"""
+        )
+        require(
+            keyboard_focus["label"] == "返回首页"
+            and keyboard_focus["outline"] != "none",
+            "desktop: keyboard focus is not visible on the first navigation link",
+        )
+        hero = page.locator("[data-hero]")
+        hero_bounds = hero.bounding_box()
+        require(hero_bounds is not None, "desktop: hero has no bounds")
+        hero.dispatch_event("pointerenter")
+        hero.dispatch_event(
+            "pointermove",
+            {
+                "clientX": hero_bounds["x"] + hero_bounds["width"] - 24,
+                "clientY": hero_bounds["y"] + 40,
+            },
+        )
+        page.wait_for_timeout(80)
+        hero_state = hero.evaluate(
+            """el => ({
+              x: el.style.getPropertyValue('--hero-x'),
+              depth: el.style.getPropertyValue('--depth-x'),
+              active: el.classList.contains('is-pointer-active')
+            })"""
+        )
+        require(hero_state["active"], "desktop: hero pointer field did not activate")
+        require(
+            abs(float(hero_state["x"].removesuffix("px"))) > 10
+            and abs(float(hero_state["depth"].removesuffix("px"))) > 20,
+            "desktop: hero pointer response is not visually meaningful",
+        )
+        hero.dispatch_event("pointerleave")
+        page.wait_for_timeout(80)
+        require(
+            hero.evaluate("el => el.style.getPropertyValue('--hero-x')") == "0px",
+            "desktop: hero did not reset after pointer leave",
+        )
+        bounds = magnetic.bounding_box()
+        require(bounds is not None, "desktop: magnetic CTA has no bounds")
+        magnetic.dispatch_event(
+            "pointerenter",
+            {
+                "clientX": bounds["x"] + bounds["width"] / 2,
+                "clientY": bounds["y"] + bounds["height"] / 2,
+            },
+        )
+        magnetic.dispatch_event(
+            "pointermove",
+            {
+                "clientX": bounds["x"] + bounds["width"] - 3,
+                "clientY": bounds["y"] + 3,
+            },
+        )
+        page.wait_for_timeout(80)
+        magnetic_state = magnetic.evaluate(
+            """el => ({
+              x: el.style.getPropertyValue('--magnetic-x'),
+              y: el.style.getPropertyValue('--magnetic-y'),
+              active: el.classList.contains('is-magnetic')
+            })"""
+        )
+        require(magnetic_state["active"], "desktop: magnetic CTA did not activate")
+        x_value = float(magnetic_state["x"].removesuffix("px"))
+        y_value = float(magnetic_state["y"].removesuffix("px"))
+        require(
+            0 < abs(x_value) <= 10 and 0 < abs(y_value) <= 10,
+            "desktop: magnetic CTA movement is missing or exceeds its limit",
+        )
+        magnetic.dispatch_event("pointerleave")
+        page.wait_for_timeout(340)
+        reset_state = magnetic.evaluate(
+            """el => ({
+              x: el.style.getPropertyValue('--magnetic-x'),
+              y: el.style.getPropertyValue('--magnetic-y'),
+              active: el.classList.contains('is-magnetic')
+            })"""
+        )
+        require(
+            reset_state == {"x": "0px", "y": "0px", "active": False},
+            "desktop: magnetic CTA did not reset on pointer leave",
+        )
+    elif name == "mobile":
+        coarse_state = magnetic.evaluate(
+            """el => ({
+              x: el.style.getPropertyValue('--magnetic-x'),
+              y: el.style.getPropertyValue('--magnetic-y'),
+              active: el.classList.contains('is-magnetic')
+            })"""
+        )
+        require(
+            coarse_state == {"x": "", "y": "", "active": False},
+            "mobile: coarse pointer initialized magnetic movement",
+        )
+
+    archive.locator("summary").focus()
+    archive.locator("summary").press("Enter")
     require(
         archive.get_attribute("open") is not None,
         f"{name}: media archive did not expand",
     )
 
-    page.wait_for_load_state("networkidle")
-    page.locator('[data-project-trigger="mirror"]').click()
+    page.locator("[data-builder-step]").first.scroll_into_view_if_needed()
+    page.wait_for_function(
+        "() => document.querySelectorAll('[data-builder-step].is-active').length >= 1"
+    )
+    require(
+        page.locator("[data-builder-step].is-active").count() >= 1,
+        f"{name}: builder journey did not activate",
+    )
+    page.locator(".builder-evidence").scroll_into_view_if_needed()
+    page.wait_for_function(
+        """() => [...document.querySelectorAll('[data-count-value]')]
+          .map(el => el.textContent.trim()).join(',') === '44,735,12,8.80'"""
+    )
+    require(
+        page.locator('[data-count-value="44735"]').inner_text() == "44,735",
+        f"{name}: request counter did not reach its final value",
+    )
+    require(
+        page.locator('[data-count-value="12"]').inner_text() == "12",
+        f"{name}: model counter did not reach its final value",
+    )
+    require(
+        page.locator('[data-count-value="8.8"]').inner_text() == "8.80",
+        f"{name}: token counter did not reach its final value",
+    )
+
+    page.locator('[data-project-trigger="gogowork"]').focus()
+    page.locator('[data-project-trigger="gogowork"]').press("Enter")
+    require(
+        page.locator('[data-project-trigger="gogowork"]').get_attribute("aria-expanded")
+        == "true",
+        f"{name}: GoGoWork did not expand",
+    )
+    gogowork_secondary = page.locator(".gogowork-visual img:nth-of-type(2)")
+    gogowork_secondary.wait_for(state="visible")
+    page.wait_for_function(
+        "() => document.querySelector('.gogowork-visual img:nth-of-type(2)')?.naturalWidth > 0"
+    )
+    image_fit = gogowork_secondary.evaluate(
+        """img => {
+          const box = img.getBoundingClientRect();
+          return {
+            naturalRatio: img.naturalWidth / img.naturalHeight,
+            renderedRatio: box.width / box.height,
+            objectFit: getComputedStyle(img).objectFit
+          };
+        }"""
+    )
+    require(
+        image_fit["objectFit"] == "contain"
+        and abs(image_fit["naturalRatio"] - image_fit["renderedRatio"]) < 0.03,
+        f"{name}: GoGoWork secondary screenshot is cropped",
+    )
+
+    risk.locator("summary").focus()
+    risk.locator("summary").press("Enter")
+    require(
+        risk.get_attribute("open") is not None,
+        f"{name}: risk project did not expand",
+    )
+
+    page.locator('[data-project-trigger="mirror"]').focus()
+    page.locator('[data-project-trigger="mirror"]').press("Enter")
     require(
         page.locator('[data-project-trigger="mirror"]').get_attribute("aria-expanded")
         == "true",
@@ -98,17 +299,22 @@ def inspect_page(page, name: str) -> dict:
     state = page.evaluate(
         """() => ({
           bodyWidth: document.body.scrollWidth,
+          documentWidth: document.documentElement.scrollWidth,
           viewportWidth: innerWidth,
           heroReady: document.querySelector('[data-hero]')?.classList.contains('is-ready'),
+          builderReady: document.querySelector('[data-builder-journey]')?.dataset.motionReady === 'true',
           scrnaMetric: document.querySelector('#scrna-omics')?.textContent.includes('13'),
           publicVideos: document.querySelectorAll('[data-public-video]').length,
           resumeHref: document.querySelector('a[href*="AdventureX"]')?.getAttribute('href')
         })"""
     )
     require(
-        state["bodyWidth"] == state["viewportWidth"], f"{name}: horizontal overflow"
+        state["bodyWidth"] == state["viewportWidth"]
+        and state["documentWidth"] == state["viewportWidth"],
+        f"{name}: horizontal overflow",
     )
     require(state["heroReady"], f"{name}: hero reveal did not initialize")
+    require(state["builderReady"], f"{name}: builder motion did not initialize")
     require(state["scrnaMetric"], f"{name}: scrna evidence is missing")
     require(state["resumeHref"], f"{name}: resume link is missing")
     require(not errors, f"{name}: browser errors: {errors}")
@@ -119,21 +325,42 @@ def main() -> int:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(channel="chrome", headless=True)
         desktop = browser.new_page(viewport={"width": 1440, "height": 1000})
-        mobile = browser.new_page(viewport={"width": 390, "height": 844})
+        tablet = browser.new_page(viewport={"width": 1024, "height": 768})
+        mobile_context = browser.new_context(
+            viewport={"width": 390, "height": 844},
+            is_mobile=True,
+            has_touch=True,
+        )
+        mobile = mobile_context.new_page()
         reduced = browser.new_page(viewport={"width": 1440, "height": 1000})
         reduced.emulate_media(reduced_motion="reduce")
 
         results = {
             "desktop": inspect_page(desktop, "desktop"),
+            "tablet": inspect_page(tablet, "tablet"),
             "mobile": inspect_page(mobile, "mobile"),
         }
 
-        reduced.goto(BASE_URL, wait_until="networkidle")
-        reduced.wait_for_timeout(2100)
+        reduced.goto(BASE_URL, wait_until="domcontentloaded")
+        reduced.wait_for_timeout(100)
+        reduced.mouse.move(820, 520)
         results["reduced_motion"] = reduced.evaluate(
             """() => ({
               loaded: document.querySelector('[data-hero-video]')?.dataset.loaded || null,
+              sourcesEmpty: [...document.querySelectorAll('[data-hero-video] source')]
+                .every(source => !source.getAttribute('src')),
               overflow: document.body.scrollWidth === innerWidth
+                && document.documentElement.scrollWidth === innerWidth,
+              journeyReadable: [...document.querySelectorAll('[data-builder-step]')]
+                .every(step => {
+                  const style = getComputedStyle(step);
+                  return style.opacity === '1' && style.transform === 'none';
+                }),
+              countersFinal: [...document.querySelectorAll('[data-count-value]')]
+                .map(el => el.textContent.trim()).join(',') === '44,735,12,8.80',
+              magneticDisabled: [...document.querySelectorAll('[data-magnetic]')]
+                .every(el => getComputedStyle(el).transform === 'none'
+                  && el.style.getPropertyValue('--magnetic-x') === '')
             })"""
         )
         require(
@@ -141,8 +368,46 @@ def main() -> int:
             "reduced motion loaded the hero video",
         )
         require(
+            results["reduced_motion"]["sourcesEmpty"],
+            "reduced motion populated hero video sources",
+        )
+        require(
             results["reduced_motion"]["overflow"], "reduced-motion layout overflowed"
         )
+        require(
+            results["reduced_motion"]["journeyReadable"],
+            "reduced motion hid the builder journey",
+        )
+        require(
+            results["reduced_motion"]["countersFinal"],
+            "reduced motion did not show final counter values",
+        )
+        require(
+            results["reduced_motion"]["magneticDisabled"],
+            "reduced motion left magnetic transforms enabled",
+        )
+
+        no_js_context = browser.new_context(
+            viewport={"width": 1024, "height": 768}, java_script_enabled=False
+        )
+        no_js = no_js_context.new_page()
+        no_js.goto(BASE_URL, wait_until="domcontentloaded")
+        results["no_javascript"] = no_js.locator("[data-builder-step]").evaluate_all(
+            """steps => steps.map(step => {
+              const style = getComputedStyle(step);
+              return { opacity: style.opacity, transform: style.transform };
+            })"""
+        )
+        require(
+            len(results["no_javascript"]) == 4
+            and all(
+                step == {"opacity": "1", "transform": "none"}
+                for step in results["no_javascript"]
+            ),
+            "no-JavaScript fallback hid the builder journey",
+        )
+        no_js_context.close()
+        mobile_context.close()
         browser.close()
 
     print(json.dumps(results, ensure_ascii=False, indent=2))

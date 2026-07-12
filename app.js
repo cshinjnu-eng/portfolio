@@ -2,6 +2,7 @@
 
 const cleanups = [
   window.initHeroMotion(document.querySelector("[data-hero]")),
+  window.initBuilderMotion(document),
   window.initScrollStory(document),
   window.initProjectExperience(
     document.querySelector("[data-project-experience]"),

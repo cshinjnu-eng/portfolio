@@ -3,11 +3,14 @@
 window.initScrollStory = function initScrollStory(scope) {
   const root = document.documentElement;
   const story = scope.querySelector("[data-path-root]");
+  const builderJourney = scope.querySelector("[data-builder-journey]");
   const steps = [...scope.querySelectorAll("[data-story-step]")];
   const parallax = scope.querySelector("[data-parallax]");
   const nav = scope.querySelector("[data-nav]");
   const lightChapters = [
-    ...scope.querySelectorAll(".story, .work, .experience, .media-community"),
+    ...scope.querySelectorAll(
+      ".builder-journey, .story, .work, .experience, .media-community",
+    ),
   ];
   let frame = 0;
 
@@ -46,6 +49,16 @@ window.initScrollStory = function initScrollStory(scope) {
         Math.max(0, (window.innerHeight * 0.38 - bounds.top) / usable),
       );
       story.style.setProperty("--path-progress", `${progress * 100}%`);
+    }
+
+    if (builderJourney) {
+      const bounds = builderJourney.getBoundingClientRect();
+      const usable = Math.max(1, bounds.height - window.innerHeight * 0.45);
+      const progress = Math.min(
+        1,
+        Math.max(0, (window.innerHeight * 0.54 - bounds.top) / usable),
+      );
+      builderJourney.style.setProperty("--builder-progress", String(progress));
     }
 
     if (

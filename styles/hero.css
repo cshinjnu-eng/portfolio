@@ -26,7 +26,7 @@
 
 .hero-media > img {
   transform: scale(1.025) translate3d(var(--hero-x, 0), var(--hero-y, 0), 0);
-  transition: transform 800ms var(--ease-out);
+  transition: transform 1050ms var(--ease-out);
 }
 
 .hero-media > video {
@@ -40,18 +40,40 @@
 
 .hero-media::after {
   position: absolute;
+  z-index: 3;
   inset: 0;
   background: linear-gradient(90deg, rgba(9, 10, 9, 0.65), transparent 62%);
   content: "";
 }
 
+.hero-media::before {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background: radial-gradient(
+    circle 320px at var(--pointer-x, 68%) var(--pointer-y, 42%),
+    rgba(240, 88, 67, 0.22),
+    rgba(250, 246, 237, 0.07) 34%,
+    transparent 72%
+  );
+  content: "";
+  opacity: 0.18;
+  pointer-events: none;
+  transition: opacity 700ms ease;
+}
+
+.hero.is-pointer-active .hero-media::before {
+  opacity: 1;
+}
+
 .hero-depth {
   position: absolute;
+  z-index: 4;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 50%;
   pointer-events: none;
   transform: translate3d(var(--depth-x, 0), var(--depth-y, 0), 0);
-  transition: transform 700ms var(--ease-out);
+  transition: transform 900ms var(--ease-out);
 }
 
 .hero-depth-one {
@@ -70,6 +92,7 @@
 
 .hero-grain {
   position: absolute;
+  z-index: 5;
   inset: 0;
   opacity: 0.08;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
@@ -101,6 +124,8 @@
   font-weight: 600;
   letter-spacing: -0.06em;
   line-height: 0.94;
+  transform: translate3d(var(--title-x, 0), var(--title-y, 0), 0);
+  transition: transform 900ms var(--ease-out);
 }
 
 .hero-title span {
@@ -211,48 +236,4 @@
   width: 54px;
   height: 1px;
   background: rgba(255, 255, 255, 0.4);
-}
-
-.proof-strip {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  padding: 0 max(32px, calc((100vw - 1440px) / 2));
-  border-bottom: 1px solid var(--ink);
-  background: var(--paper);
-}
-
-.proof-strip > div {
-  min-height: 142px;
-  padding: 24px 22px 20px 0;
-}
-
-.proof-strip > div + div {
-  padding-left: 22px;
-  border-left: 1px solid var(--line);
-}
-
-.proof-strip span,
-.proof-strip b,
-.proof-strip p {
-  display: block;
-}
-
-.proof-strip span {
-  color: var(--red);
-  font-family: var(--mono);
-  font-size: 8px;
-  letter-spacing: 0.12em;
-}
-
-.proof-strip b {
-  margin-top: 16px;
-  font-family: var(--display);
-  font-size: 26px;
-  letter-spacing: -0.05em;
-}
-
-.proof-strip p {
-  margin: 2px 0 0;
-  color: var(--muted);
-  font-size: 10px;
 }

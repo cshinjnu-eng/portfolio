@@ -32,11 +32,11 @@
     grid-template-columns: 0.62fr 1.38fr;
   }
 
-  .risk-case {
+  .risk-detail {
     grid-template-columns: 1fr;
   }
 
-  .risk-case figure {
+  .risk-detail figure {
     min-height: 460px;
   }
 
@@ -80,18 +80,6 @@
 
   .hero-note {
     right: 28px;
-  }
-
-  .proof-strip {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .proof-strip > div:nth-child(4) {
-    border-left: 0;
-  }
-
-  .proof-strip > div:nth-child(n + 4) {
-    border-top: 1px solid var(--line);
   }
 
   .story,
@@ -255,30 +243,6 @@
     left: 22px;
   }
 
-  .proof-strip {
-    grid-template-columns: repeat(2, 1fr);
-    padding: 0 16px;
-  }
-
-  .proof-strip > div,
-  .proof-strip > div + div {
-    min-height: 120px;
-    padding: 18px 12px;
-    border-top: 1px solid var(--line);
-  }
-
-  .proof-strip > div:nth-child(odd) {
-    border-left: 0;
-  }
-
-  .proof-strip > div:nth-child(even) {
-    border-left: 1px solid var(--line);
-  }
-
-  .proof-strip b {
-    font-size: 22px;
-  }
-
   .story-heading h2,
   .work-heading h2,
   .media-heading h2,
@@ -420,7 +384,7 @@
     right: 10px;
     bottom: 20px;
     width: 68%;
-    height: 58%;
+    height: auto;
   }
 
   .cat-visual {
@@ -467,8 +431,17 @@
     font-size: 15px;
   }
 
-  .risk-case figure {
+  .risk-detail figure {
     min-height: 460px;
+  }
+
+  .risk-summary {
+    min-height: 190px;
+    padding: 26px;
+  }
+
+  .risk-summary h3 {
+    font-size: 27px;
   }
 
   .skill-ledger {
@@ -557,6 +530,7 @@
 
   .hero-media > img,
   .hero-depth,
+  .hero-title,
   .story-art img {
     transform: none !important;
   }
