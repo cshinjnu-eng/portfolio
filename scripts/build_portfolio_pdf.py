@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Build the fully expanded AdventureX portfolio PDF."""
+"""Build the 12-page editorial AdventureX portfolio PDF."""
 
 from __future__ import annotations
 
 import contextlib
-import json
-import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -16,45 +14,6 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "output" / "pdf" / "陈思翰_AdventureX_个人作品集.pdf"
 URL = "http://127.0.0.1:8765/"
-
-
-def prepare_print_assets() -> dict[str, str]:
-    """Create smaller JPEG copies without touching website source assets."""
-    target_root = ROOT / "tmp" / "pdfs" / "portfolio-assets"
-    if target_root.exists():
-        shutil.rmtree(target_root)
-    target_root.mkdir(parents=True)
-
-    replacements: dict[str, str] = {}
-    for source in (ROOT / "assets").rglob("*"):
-        if source.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp"}:
-            continue
-        if source.stat().st_size < 120_000:
-            continue
-        relative = source.relative_to(ROOT)
-        target = target_root / relative.with_suffix(".jpg")
-        target.parent.mkdir(parents=True, exist_ok=True)
-        result = subprocess.run(
-            [
-                "sips",
-                "-Z",
-                "1500",
-                "-s",
-                "format",
-                "jpeg",
-                "-s",
-                "formatOptions",
-                "68",
-                str(source),
-                "--out",
-                str(target),
-            ],
-            capture_output=True,
-            text=True,
-        )
-        if result.returncode == 0 and target.exists():
-            replacements[relative.as_posix()] = target.relative_to(ROOT).as_posix()
-    return replacements
 
 
 def wait_for_server() -> None:
@@ -70,7 +29,20 @@ def wait_for_server() -> None:
 
 def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    print_assets = prepare_print_assets()
+    runtime_python = (
+        Path.home()
+        / ".cache"
+        / "codex-runtimes"
+        / "codex-primary-runtime"
+        / "dependencies"
+        / "python"
+        / "bin"
+        / "python3"
+    )
+    qr_python = str(runtime_python) if runtime_python.exists() else "python3"
+    subprocess.run(
+        [qr_python, str(ROOT / "scripts" / "generate_portfolio_qr.py")], check=True
+    )
     server = subprocess.Popen(
         ["python3", "-m", "http.server", "8765", "--bind", "127.0.0.1"],
         cwd=ROOT,
@@ -81,40 +53,39 @@ def main() -> None:
         wait_for_server()
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(channel="chrome")
-            page = browser.new_page(viewport={"width": 1440, "height": 1000})
-            page.goto(URL, wait_until="networkidle")
+            page = browser.new_page(viewport={"width": 1120, "height": 1584})
+            page.goto(f"{URL}portfolio-pdf/", wait_until="networkidle")
             page.evaluate(
-                """(printAssets) => {
-                  document.querySelectorAll('details').forEach((node) => {
-                    node.open = true;
-                  });
-                  document.querySelectorAll('.project-panel').forEach((node) => {
-                    node.hidden = false;
-                  });
-                  document.querySelectorAll('.project-item').forEach((node) => {
-                    node.classList.add('is-open');
-                  });
-                  document.querySelectorAll('.project-trigger').forEach((node) => {
-                    node.setAttribute('aria-expanded', 'true');
-                  });
-                  document.querySelectorAll('img').forEach((image) => {
-                    image.loading = 'eager';
-                    const source = image.getAttribute('src');
-                    if (printAssets[source]) image.src = printAssets[source];
-                  });
-                  document.documentElement.dataset.pdfExport = 'expanded';
-                }""",
-                json.loads(json.dumps(print_assets)),
+                """async () => {
+                  await document.fonts.ready;
+                  await Promise.all([...document.images].map((image) => {
+                    if (image.complete) return Promise.resolve();
+                    return new Promise((resolve) => {
+                      image.addEventListener('load', resolve, { once: true });
+                      image.addEventListener('error', resolve, { once: true });
+                    });
+                  }));
+                }"""
             )
-            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            page.wait_for_timeout(1800)
-            page.evaluate("window.scrollTo(0, 0)")
+            page_count = page.locator(".page").count()
+            if page_count != 12:
+                raise RuntimeError(
+                    f"editorial source has {page_count} pages, expected 12"
+                )
+            overflowing = page.evaluate(
+                """() => [...document.querySelectorAll('.page')]
+                  .filter((node) => node.scrollHeight > node.clientHeight + 1)
+                  .map((node) => node.dataset.page)"""
+            )
+            if overflowing:
+                raise RuntimeError(f"page overflow detected: {overflowing}")
             page.emulate_media(media="print")
             page.pdf(
                 path=str(OUTPUT),
                 format="A4",
                 print_background=True,
                 prefer_css_page_size=True,
+                margin={"top": "0", "right": "0", "bottom": "0", "left": "0"},
             )
             browser.close()
     finally:
