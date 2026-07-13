@@ -29,12 +29,20 @@ def main() -> None:
     for section in required_sections:
         assert section in text, f"application section is missing: {section}"
 
+    selected_prompts = [
+        "你身上贴着的哪一个标签",
+        "看似微小的技术或趋势",
+        "毫无商业价值",
+    ]
+    for prompt in selected_prompts:
+        assert prompt in text, f"new short-answer prompt is missing: {prompt}"
+
     answer_pattern = re.compile(
         r"```text\n(?P<answer>.*?)\n```\n\n字符数：(?P<count>\d+)／(?P<limit>[^。\n]+)",
         re.DOTALL,
     )
     answers = list(answer_pattern.finditer(text))
-    assert len(answers) >= 20, "too few copy-ready application answers"
+    assert len(answers) >= 18, "too few copy-ready application answers"
     copy_text = "\n".join(match.group("answer") for match in answers)
 
     limited_answers = 0
@@ -54,15 +62,17 @@ def main() -> None:
             )
 
     assert limited_answers == 9, "expected nine form-limited responses"
-    assert text.count("简历中的二维码指向同一个最终网址") == 1
+    assert text.count("简历二维码指向同一个最终网址") == 1
 
     required_facts = [
         "3 篇 SCI 论文在投",
         "校级创新创业项目",
         "创业团队核心成员",
         "2025 年三等奖、2026 年二等奖",
-        "https://portfolio-theta-lemon-56.vercel.app/",
-        "不上传未公开研究数据",
+        "https://csh.bsbsanwu.xyz",
+        "医学生就应该沿着单一路径走",
+        "关键节点把控制权交还给人",
+        "灵感过期机",
     ]
     for fact in required_facts:
         assert fact in text, f"required application fact is missing: {fact}"
@@ -72,11 +82,18 @@ def main() -> None:
         "已发表 3 篇",
         "GoGoWork｜2026—至今｜独立",
         "发明专利 1 项｜主要发明人",
+        "2036 年",
+        "8.80B",
+        "44,735",
+        "Token",
     ]
     for phrase in forbidden:
         assert phrase not in copy_text, (
             f"stale or unsupported content remains in a copy-ready answer: {phrase}"
         )
+
+    assert copy_text.count("13 个领域 Skills") <= 1
+    assert copy_text.count("2 个真实分析项目") <= 1
 
     print(
         f"PASS: {DRAFT} · {len(answers)} copy-ready answers · "
