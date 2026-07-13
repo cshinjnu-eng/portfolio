@@ -75,8 +75,9 @@ def main() -> None:
         "CN120524301B",
         "https://csh.bsbsanwu.xyz",
         "医学生就应该沿着单一路径走",
-        "关键节点把控制权交还给人",
-        "灵感过期机",
+        "短周期、可拆分、可验收",
+        "GoGoWork 目前仍在验证这套流程",
+        "世界接龙机",
     ]
     for fact in required_facts:
         assert fact in text, f"required application fact is missing: {fact}"
@@ -90,6 +91,8 @@ def main() -> None:
         "8.80B",
         "44,735",
         "Token",
+        "灵感过期机",
+        "关键节点把控制权交还给人",
     ]
     for phrase in forbidden:
         assert phrase not in copy_text, (

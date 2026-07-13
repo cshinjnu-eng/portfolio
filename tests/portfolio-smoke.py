@@ -104,6 +104,14 @@ def inspect_page(page, name: str) -> dict:
         f"{name}: revised collaboration invitation is missing",
     )
     require(
+        page.get_by_text("在小红书账号内运营两个近", exact=False).count() == 1,
+        f"{name}: Xiaohongshu community attribution is missing",
+    )
+    require(
+        page.get_by_text("微信社群", exact=False).count() == 0,
+        f"{name}: communities are still misattributed to WeChat",
+    )
+    require(
         page.get_by_text("正在寻找合作。", exact=True).count() == 0,
         f"{name}: rejected collaboration copy remains",
     )

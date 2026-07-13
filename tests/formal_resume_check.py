@@ -41,6 +41,7 @@ def main() -> None:
         "CN120524301B",
         "CN202511016189.8",
         "主要发明人之一",
+        "小红书账号内运营",
     ]
     for phrase in required:
         assert phrase in text, f"required resume text is missing: {phrase}"
@@ -53,6 +54,7 @@ def main() -> None:
         "RESEARCH PRODUCT BUILDER",
         "portfolio-theta-lemon-56.vercel.app",
         "已发表 3 篇",
+        "微信社群",
     ]
     for phrase in forbidden:
         assert phrase not in text, f"forbidden resume text remains: {phrase}"
