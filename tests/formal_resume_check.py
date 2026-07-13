@@ -38,8 +38,9 @@ def main() -> None:
         "校级创新创业项目",
         "csh.bsbsanwu.xyz",
         "国家发明专利（已授权）",
-        "主要发明人之一",
         "CN120524301B",
+        "CN202511016189.8",
+        "主要发明人之一",
     ]
     for phrase in required:
         assert phrase in text, f"required resume text is missing: {phrase}"

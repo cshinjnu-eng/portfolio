@@ -1,0 +1,317 @@
+@page {
+  size: A4;
+  margin: 11mm 12mm 13mm;
+}
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+
+  html,
+  body {
+    width: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: #f7f3ea !important;
+    color: #141513 !important;
+    font-size: 9pt;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .page-progress,
+  .site-nav,
+  .cursor-preview,
+  .media-dialog,
+  .video-trigger,
+  .hero-media > video,
+  .hero-depth,
+  .hero-grain,
+  footer {
+    display: none !important;
+  }
+
+  main,
+  section,
+  .builder-journey,
+  .story,
+  .work,
+  .experience {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+  }
+
+  section,
+  .builder-journey {
+    padding: 12mm 0 8mm !important;
+  }
+
+  .builder-journey,
+  .story,
+  .scrna-feature,
+  .work,
+  .media-community,
+  .experience,
+  .research-index,
+  .contact {
+    break-before: page;
+  }
+
+  .hero {
+    min-height: 246mm !important;
+    overflow: hidden !important;
+    break-after: page;
+  }
+
+  .hero-media > img {
+    display: block !important;
+    transform: none !important;
+  }
+
+  .hero-title,
+  .reveal-line,
+  [data-builder-step],
+  .story-timeline article {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .builder-intro,
+  .builder-path,
+  .builder-evidence,
+  .story-grid,
+  .scrna-evidence,
+  .work-heading,
+  .media-layout,
+  .experience-records,
+  .research-index {
+    gap: 7mm !important;
+  }
+
+  .builder-path {
+    grid-template-columns: repeat(2, 1fr) !important;
+    margin-top: 12mm !important;
+  }
+
+  .builder-path article,
+  .builder-path article:nth-of-type(even) {
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 7mm 4mm 5mm 0 !important;
+  }
+
+  .builder-evidence {
+    margin-top: 8mm !important;
+    padding: 7mm !important;
+    break-inside: avoid;
+  }
+
+  .story-grid {
+    grid-template-columns: 0.78fr 0.42fr 1fr !important;
+    margin-top: 8mm !important;
+  }
+
+  .story-art,
+  .story-portrait {
+    position: static !important;
+    min-height: 0 !important;
+  }
+
+  .story-art img {
+    height: 145mm !important;
+    transform: none !important;
+  }
+
+  .story-timeline article {
+    min-height: 0 !important;
+    padding-bottom: 8mm !important;
+    break-inside: avoid;
+  }
+
+  .scrna-feature {
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  .scrna-intro,
+  .scrna-evidence {
+    display: block !important;
+  }
+
+  .scrna-background {
+    inset: 0 !important;
+  }
+
+  .scrna-intro h2 {
+    font-size: 54pt !important;
+  }
+
+  .scrna-thesis {
+    max-width: 150mm !important;
+    font-size: 20pt !important;
+  }
+
+  .scrna-copy {
+    width: 100% !important;
+    margin-top: 9mm;
+  }
+
+  .scrna-media-stack {
+    min-height: 142mm !important;
+    margin-top: 8mm;
+    break-inside: avoid;
+  }
+
+  .work,
+  .media-community,
+  .experience,
+  .research-index {
+    display: block !important;
+  }
+
+  .work-heading,
+  .project-experience,
+  .media-heading,
+  .media-layout,
+  .experience-heading,
+  .skill-ledger,
+  .experience-records,
+  .research-heading,
+  .research-list {
+    margin-top: 0 !important;
+  }
+
+  .project-item {
+    break-before: page;
+  }
+
+  .project-item:first-child {
+    break-before: auto;
+  }
+
+  .project-trigger {
+    min-height: 18mm !important;
+    grid-template-columns: 14mm 1fr auto !important;
+  }
+
+  .project-trigger small,
+  .project-trigger i {
+    display: none !important;
+  }
+
+  .project-trigger b {
+    font-size: 28pt !important;
+    transform: none !important;
+  }
+
+  .project-panel,
+  .project-panel[hidden] {
+    display: grid !important;
+    grid-template-columns: 0.72fr 1.28fr !important;
+    gap: 7mm !important;
+    padding: 2mm 0 0 !important;
+  }
+
+  .project-visual {
+    min-height: 142mm !important;
+    break-inside: avoid;
+  }
+
+  .media-layout {
+    grid-template-columns: 0.7fr 1.3fr !important;
+    align-items: start !important;
+  }
+
+  details,
+  details > *,
+  .risk-detail,
+  .media-video-grid {
+    display: block !important;
+  }
+
+  details > summary {
+    display: grid !important;
+  }
+
+  details summary i {
+    display: none !important;
+  }
+
+  .risk-detail figure {
+    min-height: 0 !important;
+  }
+
+  .risk-detail figure img {
+    height: auto !important;
+    max-height: 150mm !important;
+    object-fit: contain !important;
+  }
+
+  .media-archive {
+    margin-top: 7mm !important;
+    break-before: page;
+  }
+
+  .media-video-grid {
+    columns: 2;
+    column-gap: 8mm;
+  }
+
+  .media-video-item {
+    display: grid !important;
+    grid-template-columns: 42mm 1fr !important;
+    break-inside: avoid;
+  }
+
+  .media-video-item > i {
+    display: none !important;
+  }
+
+  .skill-ledger,
+  .experience-records {
+    break-inside: auto;
+  }
+
+  .skill-ledger article,
+  .honor-list div,
+  .research-list a {
+    break-inside: avoid;
+  }
+
+  .research-index,
+  .dark-section {
+    background: #141513 !important;
+    color: #f7f3ea !important;
+  }
+
+  .research-list a {
+    grid-template-columns: 34mm 1fr 1.4fr 5mm !important;
+    padding: 5mm 0 !important;
+  }
+
+  .contact {
+    min-height: 246mm !important;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .contact h2 {
+    font-size: 44pt !important;
+  }
+
+  .contact-bottom {
+    margin-top: 18mm !important;
+  }
+
+  a {
+    text-decoration: none !important;
+  }
+}

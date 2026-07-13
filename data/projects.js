@@ -23,6 +23,10 @@ window.PORTFOLIO_PROJECTS = Object.freeze([
         label: "scAIreport",
         href: "https://github.com/cshinjnu-eng/scAIreport",
       }),
+      Object.freeze({
+        label: "公开单细胞分析",
+        href: "https://github.com/cshinjnu-eng/scRNA-seq-gdT-psoriasis",
+      }),
     ]),
     media: Object.freeze({
       poster: "assets/projects/scrna-hero.png",

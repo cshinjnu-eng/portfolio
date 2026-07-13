@@ -57,12 +57,21 @@ def inspect_page(page, name: str) -> dict:
     archive = page.locator(".media-archive")
     require(archive.count() == 1, f"{name}: media archive is missing")
     require(
-        archive.get_attribute("open") is None,
-        f"{name}: media archive should start collapsed",
+        archive.get_attribute("open") is not None,
+        f"{name}: media archive should start expanded",
     )
     require(
         page.locator("[data-public-video]").count() == 4,
         f"{name}: expected four public videos",
+    )
+    require(
+        page.locator('a[href*="scRNA-seq-gdT-psoriasis"]').count() >= 2,
+        f"{name}: public single-cell analysis evidence is missing",
+    )
+    require(
+        page.get_by_text("67,742 个细胞", exact=False).count() >= 1
+        and page.get_by_text("8 个亚群", exact=False).count() >= 1,
+        f"{name}: public single-cell evidence facts are missing",
     )
     journey = page.locator("[data-builder-journey]")
     require(journey.count() == 1, f"{name}: builder journey is missing")
@@ -227,8 +236,13 @@ def inspect_page(page, name: str) -> dict:
     archive.locator("summary").focus()
     archive.locator("summary").press("Enter")
     require(
+        archive.get_attribute("open") is None,
+        f"{name}: media archive did not collapse",
+    )
+    archive.locator("summary").press("Enter")
+    require(
         archive.get_attribute("open") is not None,
-        f"{name}: media archive did not expand",
+        f"{name}: media archive did not expand again",
     )
 
     page.locator("[data-builder-step]").first.scroll_into_view_if_needed()
