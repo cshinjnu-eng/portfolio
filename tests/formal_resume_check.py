@@ -28,7 +28,7 @@ def main() -> None:
         "科研经历",
         "核心项目",
         "产品与团队经历",
-        "荣誉与项目立项",
+        "专利、荣誉与项目立项",
         "技术能力",
         "3 篇 SCI 论文在投",
         "2 个真实研究项目",
@@ -37,6 +37,9 @@ def main() -> None:
         "暨南大学 AI+ 创新大赛｜二等奖",
         "校级创新创业项目",
         "csh.bsbsanwu.xyz",
+        "国家发明专利（已授权）",
+        "主要发明人之一",
+        "CN120524301B",
     ]
     for phrase in required:
         assert phrase in text, f"required resume text is missing: {phrase}"
