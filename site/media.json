@@ -1,0 +1,86 @@
+[
+  {
+    "slug": "timebox",
+    "kind": "image",
+    "path": "assets/timebox-timer.webp",
+    "poster": null,
+    "caption": "TimeBox v2 历史计时界面"
+  },
+  {
+    "slug": "dental-trauma",
+    "kind": "video",
+    "path": "assets/dental-interaction.mp4",
+    "poster": "assets/dental-interaction-poster.jpg",
+    "caption": "外观选择与牙列切换 · 实际页面截图序列"
+  },
+  {
+    "slug": "timebox",
+    "kind": "video",
+    "path": "assets/timebox-interface.mp4",
+    "poster": "assets/timebox-interface-poster.jpg",
+    "caption": "TimeBox v2 历史界面，静态截图缩放制作，非功能录屏"
+  },
+  {
+    "slug": "jmate-photo",
+    "kind": "image",
+    "path": "assets/jmate-photo.webp",
+    "poster": null,
+    "caption": "暨伴照片上传界面"
+  },
+  {
+    "slug": "dental-trauma",
+    "kind": "image",
+    "path": "assets/dental-selector.webp",
+    "poster": null,
+    "caption": "儿童牙外伤科普：外观选择界面"
+  },
+  {
+    "slug": "cat",
+    "kind": "video",
+    "path": "assets/cat-roll.mp4",
+    "poster": "assets/cat-roll-poster.jpg",
+    "caption": "小猫翻滚：由项目动作图中六帧顺序编排"
+  },
+  {
+    "slug": "dental-trauma",
+    "kind": "image",
+    "path": "assets/dental-home.webp",
+    "poster": null,
+    "caption": "儿童牙外伤科普：项目首页"
+  },
+  {
+    "slug": "jmate",
+    "kind": "image",
+    "path": "assets/jmate-photo.webp",
+    "poster": null,
+    "caption": "暨伴照片模块历史界面"
+  },
+  {
+    "slug": "genealogy",
+    "kind": "image",
+    "path": "assets/genealogy.svg",
+    "poster": null,
+    "caption": "工作流示意 · 从会话痕迹到可回看的来源"
+  },
+  {
+    "slug": "lesson-workflow",
+    "kind": "image",
+    "path": "assets/lesson-workflow.svg",
+    "poster": null,
+    "caption": "工作流示意 · 让录音与课件重新对齐"
+  },
+  {
+    "slug": "video-learning",
+    "kind": "image",
+    "path": "assets/video-learning.svg",
+    "poster": null,
+    "caption": "工作流示意 · 把视频转成可复习的材料"
+  },
+  {
+    "slug": "ai-workstation",
+    "kind": "image",
+    "path": "assets/ai-workstation.svg",
+    "poster": null,
+    "caption": "工作流示意 · 为应用连接任务处理与模型服务"
+  }
+]
